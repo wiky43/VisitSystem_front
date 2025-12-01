@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Visitas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Decorative Background Blobs -->
+    <div class="blob"></div>
+    <div class="blob"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header"a>
+                <h1>Registro de Visitas</h1>
+                <p>Por favor complete el formulario para registrar su ingreso.</p>
+            </div>
+
+            <form id="visitorForm" class="form-grid">
+                <!-- Nombre -->
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez" required>
+                </div>
+
+                <!-- Cédula -->
+                <div class="form-group">
+                    <label for="cedula">Cédula / ID</label>
+                    <input type="text" id="cedula" name="cedula" placeholder="Ej. 1234567890" required>
+                </div>
+
+                <!-- Empresa -->
+                <div class="form-group">
+                    <label for="empresa">Empresa</label>
+                    <input type="text" id="empresa" name="empresa" placeholder="Nombre de su empresa" required>
+                </div>
+
+                <!-- Departamento -->
+                <div class="form-group">
+                    <label for="departamento">Departamento</label>
+                    <input type="text" id="departamento" name="departamento" placeholder="Ej. Recursos Humanos"
+                        required>
+                </div>
+
+                <!-- Visitado (Persona a quien visita) -->
+                <div class="form-group">
+                    <label for="visitado">A quién visita</label>
+                    <input type="text" id="visitado" name="visitado" placeholder="Nombre del anfitrión" required>
+                </div>
+
+                <!-- Fecha -->
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+
+                <!-- Motivo -->
+                <div class="form-group full-width">
+                    <label for="motivo">Motivo de la visita</label>
+                    <textarea id="motivo" name="motivo" placeholder="Describa brevemente el motivo..." rows="3"
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Registrar Visita</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="authGuard.js"></script>
+
+    <script src="apiClient.js" type="module"></script>
+
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
