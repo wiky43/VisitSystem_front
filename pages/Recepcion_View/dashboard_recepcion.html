@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Visitas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=logout"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="menu">
+        <div class="logo">
+          <img
+            src="../../assets/promipyme_logo_para_portada-removebg-preview.png"
+            alt="Logo"
+          />
+        </div>
+        <p class="website_name"></p>
+        <div class="menu_links">
+          <a href="dashboard_recepcion.html" class="link">Inicio</a>
+          <a href="activesVisitors.html" class="link">Visitantes Actuales</a>
+          <button id="logout-button" class="link btnlogout">
+            Cerrar Sesión
+            <i class="material-symbols-outlined"> logout </i>
+          </button>
+        </div>
+      </nav>
+
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="container main-layout">
+      <div class="card registration-card">
+        <div class="card-header">
+          <h1>Registro de Visitas</h1>
+          <p>Complete el formulario para registrar el ingreso del visitante.</p>
+        </div>
+        <form id="visitorForm" class="form-grid">
+          <!-- Nombre del visitante -->
+          <div class="form-group">
+            <label for="nombre">Nombre Completo</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Ej. Juan Pérez"
+              required
+            />
+          </div>
+
+          <!-- Cédula -->
+          <div class="form-group" maxlength="13">
+            <label for="cedula">Cédula</label>
+            <input
+              type="text"
+              id="cedula"
+              name="cedula"
+              placeholder="Ej. 402-1234567-0"
+              required
+            />
+          </div>
+
+          <!-- Empresa -->
+          <div class="form-group">
+            <label for="empresa">Empresa</label>
+            <input
+              type="text"
+              id="empresa"
+              name="empresa"
+              placeholder="Nombre de la empresa"
+              required
+            />
+          </div>
+          <!-- A quién visita (Empleado con autocompletado) -->
+          <div class="form-group">
+            <label for="visitado">A quien visita</label>
+            <input
+              type="text"
+              id="visitado"
+              name="visitado"
+              list="listaVisitados"
+              placeholder="A quien visita?"
+              oninput="buscarEmpleado(this.value)"
+              onchange="cargarDepartamentoPorEmpleado(this.value)"
+              required
+            />
+            <datalist id="listaVisitados"></datalist>
+          </div>
+          <!-- Departamento (Autocompletado) -->
+          <div class="form-group">
+            <label for="departamento">Departamento</label>
+            <input
+              type="text"
+              id="departamento"
+              name="departamento"
+              list="listaDepartamentos"
+              placeholder="Ej. Recursos Humanos"
+              oninput="buscarDepartamento(this.value)"
+              required
+            />
+            <datalist id="listaDepartamentos"></datalist>
+          </div>
+
+          <!-- Motivo -->
+          <div class="form-group" maxlength="25">
+            <label for="motivo">Motivo de la visita</label>
+            <textarea
+              id="motivo"
+              name="motivo"
+              placeholder="Describa brevemente el motivo..."
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <!-- Botón de registro -->
+          <button type="submit" class="btn-submit">Registrar Visita</button>
+        </form>
+      </div>
+
+      <!-- Tarjeta de visitantes activos -->
+      <div class="card active-visitors-card">
+        <div class="card-header">
+          <div>
+            <h1>Visitantes Activos</h1>
+          </div>
+          <p>Gestione la salida de los visitantes pendientes.</p>
+        </div>
+        <div style="overflow-x: auto">
+          <table class="visitors-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>Empresa</th>
+                <th>Visita a</th>
+                <th>Entrada</th>
+                <th>Código</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="visitorsTableBody"></tbody>
+          </table>
+        </div>
+        <div
+          id="loading"
+          style="text-align: center; padding: 20px; display: none"
+        >
+          Cargando...
+        </div>
+        <div
+          id="error-msg"
+          style="
+            text-align: center;
+            padding: 20px;
+            color: #ef4444;
+            display: none;
+          "
+        ></div>
+      </div>
+    </div>
+    <script src="../../js/guards/authGuard.js" type="module"></script>
+    <script src="../../js/services/apiClient.js" type="module"></script>
+    <script src="../../js/Module/AutoComplete.js" type="module"></script>
+    <script src="../../js/Module/Logout.js" type="module"></script>
+    <script src="../../js/ui/snackbar.js" type="module"></script>
+    <script src="../../js/Module/script.js" type="module"></script>
+    <script src="../../js/Module/visitors.js" type="module"></script>
+  </body>
+</html>
