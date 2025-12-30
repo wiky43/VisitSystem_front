@@ -1,6 +1,6 @@
 import { protectedFetch } from "../services/apiClient.js";
 import { showSnackBar, showConfirmSnackBar } from "../ui/snackbar.js";
-import { loadVisitors } from "./visitors.js";
+import { loadVisitors } from "../visitors.js";
 import {
   buscarEmpleado,
   buscarDepartamento,

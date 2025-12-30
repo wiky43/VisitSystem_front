@@ -1,11 +1,12 @@
 // users.js (refactor)
-import { protectedFetch } from "../services/apiClient.js";
-import { checkAuth } from "../guards/authGuard.js";
-import { showSnackBar, showConfirmSnackBar } from "../ui/snackbar.js";
+// users.js (refactorizado con rutas correctas)
+import { protectedFetch } from "../services/apiClient.js"; // Sube un nivel a /js/ y entra a /services/
+import { checkAuth } from "../guards/authGuard.js"; // Sube un nivel a /js/ y entra a /guards/
+import { showSnackBar, showConfirmSnackBar } from "../ui/snackbar.js"; // Sube un nivel a /js/ y entra a /ui/;
 
 // --- Protección de Acceso ---
 if (!checkAuth(["Administrador"])) {
-  throw new Error("Acceso no autorizado. Redirigiendo...");
+  showSnackBar("Acceso no autorizado. Redirigiendo...");
 }
 
 const API_URL = "/api/users";

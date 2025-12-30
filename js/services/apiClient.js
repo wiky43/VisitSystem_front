@@ -45,18 +45,12 @@ export async function protectedFetch(endpoint, method = "GET", data = null) {
       } catch (e) {
         // Fallback if not JSON
       }
-      // showSnackBar(errorMessage, "error"); // Removed to avoid double snacking if caller handles it?
-      // Actually original has it inside catch? No, original threw error.
-      // But auth.js had SNACKBAR inside !response.ok block.
-      // We will THROW and let caller handle OR show snackbar here?
-      // Default behavior: throw.
+
       throw new Error(errorMessage);
     }
 
     return response;
   } catch (error) {
-    // showSnackBar("Error en protectedFetch: " + error, "error"); // Too noisy?
-
     if (
       (response === null && error.message.includes("Failed to fetch")) ||
       error.message.includes("NetworkError")
