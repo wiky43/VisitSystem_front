@@ -1,10 +1,17 @@
-import { protectedFetch } from "./apiClient.js";
+import { protectedFetch } from "../services/apiClient.js";
+import { showSnackBar, showConfirmSnackBar } from "../ui/snackbar.js";
+import { loadVisitors } from "./visitors.js";
+import {
+  buscarEmpleado,
+  buscarDepartamento,
+  cargarDepartamentoPorEmpleado,
+} from "./AutoComplete.js";
+
+window.buscarEmpleado = buscarEmpleado;
+window.buscarDepartamento = buscarDepartamento;
+window.cargarDepartamentoPorEmpleado = cargarDepartamentoPorEmpleado;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const dateInput = document.getElementById("fecha");
-  const today = new Date().toISOString().split("T")[0];
-  dateInput.value = today;
-
   const form = document.getElementById("visitorForm");
 
   form.addEventListener("submit", async (e) => {
@@ -32,16 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (missingFields.length > 0) {
-      console.error("Validación fallida. Campos faltantes:", missingFields);
-      console.groupEnd();
-      alert(
-        `Por favor complete los siguientes campos: ${missingFields.join(", ")}`
+      const fieldsText = missingFields.join(", ");
+      showSnackBar(
+        `Validación fallida. Campos faltantes: ${fieldsText}`,
+        "error"
       );
+
       return;
     }
 
-    console.log("✅ Validación exitosa. Enviando datos...");
-    console.groupEnd();
+    showSnackBar("✅ Validación exitosa. Enviando datos...", "success");
 
     const btn = form.querySelector(".btn-submit");
     const originalText = btn.innerText;
@@ -49,22 +56,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const result = await protectedFetch(
-        "/visitantes/registrar",
+        "/api/Visitantes/registrar",
         "POST",
         data
       );
-
+      loadVisitors();
       console.log("Success:", result);
 
       btn.innerText = "¡Registrado!";
       btn.style.background = "linear-gradient(135deg, #22c55e, #16a34a)";
 
-      alert("Visita registrada exitosamente en el sistema.");
+      showSnackBar(
+        "✅ Visita registrada exitosamente en el sistema.",
+        "success"
+      );
 
-      // Reset form
       form.reset();
-      dateInput.value = today;
-
       setTimeout(() => {
         btn.innerText = originalText;
         btn.style.background = "";
@@ -73,7 +80,10 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error:", error);
       btn.innerText = "Error";
       btn.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
-      alert("Hubo un error al registrar la visita. Detalles: " + error.message);
+      showSnackBar(
+        "Hubo un error al registrar la visita. Detalles: " + error.message,
+        "error"
+      );
 
       setTimeout(() => {
         btn.innerText = originalText;

@@ -1,0 +1,416 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap");
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+/* =========================
+   Variables base
+========================= */
+:root {
+  /* Paleta Principal (Azul/Índigo - Estilo Unificado) */
+  --primary-color: #003876;
+  --primary-hover: #ce1126;
+  --accent-color: #ce1126;
+  --bg-gradient-1: #003876;
+  --bg-gradient-2: #ce1126;
+
+  /* Glassmorphism y Tipografía */
+  --glass-bg: rgba(255, 255, 255, 0.068);
+  --glass-border: rgba(255, 255, 255, 0.021);
+  --text-main: #000000;
+  --text-muted: #000000;
+  --input-bg: rgba(0, 0, 0, 0.3);
+
+  /* Tipografía */
+  --font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  --bg-main: #f4f6fb;
+  --card-bg: #ffffff;
+  --primary: #003876;
+  --danger: #ce1126;
+  --radius: 14px;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   Reset básico
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  text-decoration: none;
+}
+
+body {
+  min-height: 100vh;
+  display: block;
+  color: var(--text-main);
+  padding: 0px;
+  position: relative;
+  background: #efefef;
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: -1;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+body::before {
+  background: var(--accent-color);
+  bottom: -100px;
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  background: var(--primary-color);
+  bottom: -100px;
+  right: -100px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(50px, 50px) rotate(20deg);
+  }
+}
+
+/* =========================
+   Layout principal
+========================= */
+.main-layout {
+  max-width: 1600px;
+  margin: 40px auto;
+  padding: 20px 20px;
+}
+
+/* =========================
+   Header
+========================= */
+.card-header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h2 {
+  font-family: var(--font-family);
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+/* =========================
+   Botón nuevo usuario
+========================= */
+#btnNuevoUsuario {
+  font-size: 1.2rem;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+}
+
+#btnNuevoUsuario i {
+  font-size: 28px;
+  line-height: 1;
+}
+
+/* =========================
+   Alertas y loaders
+========================= */
+#loadingUsers {
+  display: flex;
+  justify-content: center;
+}
+
+#error-msg-users {
+  border-radius: var(--radius);
+  font-weight: 500;
+}
+
+/* =========================
+   Card tabla
+========================= */
+.card {
+  border-radius: var(--radius);
+  border: none;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-soft);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* =========================
+   Tabla
+========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+  table-layout: auto;
+}
+.table thead th {
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.table td,
+.table th {
+  padding: 12px 5px;
+  text-align: center;
+  min-width: 100px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.table thead {
+  background: linear-gradient(135deg, #b71c1c, var(--primary-color));
+}
+.table .btn i {
+  font-size: 1.3rem;
+  color: #fff;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.btn-Edit {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.btn-Edit:hover {
+  background-color: var(--primary-color);
+  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  color: var(--text-main);
+}
+
+.btn-Delete {
+  background-color: var(--primary-hover);
+
+  color: #fff;
+}
+
+.btn-Delete:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   Acciones
+========================= */
+.table .btn {
+  border-radius: 5px;
+  padding: 6px 25px;
+  font-size: 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* =========================
+   Modal
+========================= */
+.modal-content {
+  border-radius: var(--radius);
+  border: none;
+  box-shadow: var(--shadow-soft);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-soft);
+}
+#userModal .form-control,
+#userModal .form-select {
+  border: 1.5px solid #000;
+}
+
+#userModal .form-control:focus,
+#userModal .form-select:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.25);
+}
+#userModal .form-control::placeholder {
+  color: #000;
+}
+/* =========================
+   Formularios
+========================= */
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+/* Mensajes de carga y error */
+#loading {
+  font-size: 16px;
+  color: #1e40af;
+  text-align: center;
+  padding: 15px 0;
+}
+
+#error-msg {
+  font-size: 16px;
+  color: #b71c1c;
+  text-align: center;
+  padding: 15px 0;
+}
+/* Snackbar / Toast Styles */
+#snackbar {
+  visibility: hidden;
+  min-width: 300px;
+  background: rgba(15, 23, 42, 0.9); /* Dark background */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  text-align: left;
+  border-radius: 12px;
+  padding: 16px 24px;
+  position: fixed;
+  z-index: 9999;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-left: 4px solid var(--primary-color);
+}
+
+#snackbar.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px;
+}
+
+#snackbar.error {
+  border-left-color: #ef4444; /* Red for errors */
+}
+
+#snackbar.success {
+  border-left-color: #10b981; /* Green for success */
+}
+
+#snackbar i {
+  font-size: 1.5rem;
+}
+
+#snackbar.error i {
+  color: #ef4444;
+}
+
+#snackbar.success i {
+  color: #10b981;
+}
+#snackbar.confirm {
+  background-color: #111827;
+  justify-content: space-between;
+  width: auto;
+  min-width: 320px;
+  max-width: 450px;
+}
+
+/* Botones de confirmación del SnackBar*/
+#snackbar.btn-snackbar {
+  background-color: #374151;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+#snackbar.confirm .btn-snackbar {
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#snackbar.confirm .btn-snackbar#confirm-yes {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
+#snackbar.confirm .btn-snackbar#confirm-yes:hover {
+  background-color: #22c55e;
+  transform: scale(1.05);
+}
+
+#snackbar.confirm .btn-snackbar#confirm-no {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+#snackbar.confirm .btn-snackbar#confirm-no:hover {
+  transform: scale(1.05);
+  background-color: #ef4444;
+}
+
+/* =========================
+   Responsive
+========================= */
+@media (max-width: 768px) {
+  .card-header {
+    align-items: stretch;
+  }
+
+  #btnNuevoUsuario {
+    width: 100%;
+  }
+}
