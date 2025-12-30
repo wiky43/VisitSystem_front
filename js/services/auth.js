@@ -12,7 +12,7 @@ export function setCurrentUser(user) {
 
 export function logout() {
   localStorage.removeItem("currentUser");
-  window.location.href = "index.html";
+  window.location.href = "/index.html";
 }
 
 // ----------------------------------------------------------------------
@@ -202,10 +202,10 @@ document.addEventListener("DOMContentLoaded", () => {
           setCurrentUser(user);
 
           if (user.role === "Administrador") {
-            window.location.href = "../../Admin_View/dashboard_admin.html";
+            window.location.href = "pages/Admin_View/dashboard_admin.html";
           } else {
             window.location.href =
-              "../../Recepcion_View/dashboard_recepcion.html";
+              "pages/Recepcion_View/dashboard_recepcion.html";
           }
         } else {
           let message = responseData.message || response.statusText;

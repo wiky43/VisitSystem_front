@@ -1,8 +1,11 @@
+import { getCurrentUser } from "../services/auth.js";
+import { showSnackBar } from "../ui/snackbar.js";
+
 export const checkAuth = (allowedRoles = []) => {
   const user = getCurrentUser();
 
   if (!user?.username) {
-    window.location.href = "index.html";
+    window.location.href = "/index.html";
     return false;
   }
 
@@ -13,7 +16,7 @@ export const checkAuth = (allowedRoles = []) => {
     showSnackBar(`Acceso denegado. Rol: ${user.role}`, "error");
 
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "/index.html";
     }, 1200);
 
     return false;
