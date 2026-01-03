@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap");
+@import url("https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css");
+:root {
+  /* Paleta Principal (Azul/Índigo - Estilo Unificado) */
+  --primary-color: #003876; /* Indigo VIBRANTE */
+  --primary-hover: #ce1126;
+  --accent-color: #ce1126; /* Pink VIBRANTE (Acento Secundario - Blobs/Gradientes) */
+  --bg-gradient-1: #003876; /* Dark Slate (Base más oscura) */
+  --bg-gradient-2: #ce1126; /* Dark Indigo/Blue (Fondo) */
+
+  /* Glassmorphism y Tipografía */
+  --glass-bg: rgba(255, 255, 255, 0.068);
+  --glass-border: rgba(255, 255, 255, 0.021);
+  --text-main: #000000; /* Gris oscuro para lectura */
+  --text-muted: #000000; /* Gris medio para subtítulos */
+  --input-bg: rgba(0, 0, 0, 0.3);
+
+  /* Tipografía */
+  --font-family: "barlow", system-ui, -apple-system, sans-serif;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.35s linear;
+  font-family: "barlow", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  color: var(--text-main);
+  padding: 0px;
+  position: relative;
+  background: #efefef;
+  overflow: hidden;
+}
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: -1;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+body::before {
+  background: var(--accent-color);
+  bottom: -100px;
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  background: var(--primary-color);
+  bottom: -100px;
+  right: -100px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(50px, 50px) rotate(20deg);
+  }
+}

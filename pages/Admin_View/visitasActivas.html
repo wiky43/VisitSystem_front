@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="view-transition" content="same-origin" />
+    <title>Visitas Activas</title>
+
+    <link rel="stylesheet" href="/css/visitasStyle.css" />
+    <link rel="stylesheet" href="/css/snackbardstyle.css" />
+    <link rel="stylesheet" href="/css/asideStyle.css" />
+    <link rel="icon" href="/assets/icon01.ico" type="image/x-icon" />
+    <!-- Material Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    />
+  </head>
+
+  <body>
+    <!-- ================= ASIDE ================= -->
+    <aside>
+      <button id="toggle">
+        <i class="fi-rr-menu-burger"></i>
+      </button>
+      <div class="link">
+        <ul>
+          <li id="btn-home" class="active">
+            <i class="fi-rr-home"></i>
+            <label>Inicio</label>
+          </li>
+          <li id="btn-usuarios">
+            <i class="fi-rr-user-add"></i>
+            <label>Usuarios</label>
+          </li>
+          <li id="btn-reportes">
+            <i class="fi-rr-file"></i>
+            <label>Reportes</label>
+          </li>
+          <li id="btn-visitas">
+            <i class="fi-rr-user"></i>
+            <label>Visitas</label>
+          </li>
+        </ul>
+      </div>
+      <div class="user">
+        <ul>
+          <li>
+            <i>
+              <img
+                src="/assets/promipyme_logo_para_portada-removebg-preview.png"
+                alt=""
+              />
+            </i>
+            <label>Administrador</label>
+          </li>
+          <li id="logout-button">
+            <i class="fi-rr-exit"></i>
+            <label>Cerrar Sesión</label>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main-content">
+      <div class="container-layout-table">
+        <div class="card active-visitors-card">
+          <div class="card-header">
+            <h1>Visitantes Actuales</h1>
+            <p>Gestione la salida de los visitantes pendientes.</p>
+          </div>
+          <div style="overflow-x: auto">
+            <table class="visitors-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Cédula</th>
+                  <th>Empresa</th>
+                  <th>Visita a</th>
+                  <th>Departamento</th>
+                  <th>Motivo</th>
+                  <th>Entrada</th>
+                  <th>Código</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="visitorsTableBodyP"></tbody>
+            </table>
+          </div>
+          <div
+            id="loading"
+            style="text-align: center; padding: 20px; display: none"
+          >
+            Cargando...
+          </div>
+          <div
+            id="error-msg"
+            style="
+              text-align: center;
+              padding: 20px;
+              color: #ef4444;
+              display: none;
+            "
+          ></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Snackbar -->
+    <div id="snackbar"></div>
+
+    <!-- Scripts -->
+
+    <script type="module" src="../../js/main/visitas.pages.js"></script>
+  </body>
+</html>

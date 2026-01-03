@@ -1,105 +1,132 @@
-.sidebar {
-  --color-primary: linear-gradient(
-    -45deg,
-    var(--primary-color),
-    var(--accent-color)
-  );
-  position: fixed;
-  overflow: hidden;
-  top: 24px;
-  left: 24px;
-  bottom: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 80px;
-  border-radius: 18px;
-  transition: width 0.4s;
-  z-index: 100;
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap");
+@import url("https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css");
+:root {
+  /* Paleta Principal (Azul/Índigo - Estilo Unificado) */
+  --primary-color: #003876; /* Indigo VIBRANTE */
+  --primary-hover: #ce1126;
+  --accent-color: #ce1126; /* Pink VIBRANTE (Acento Secundario - Blobs/Gradientes) */
+  --bg-gradient-1: #003876; /* Dark Slate (Base más oscura) */
+  --bg-gradient-2: #ce1126; /* Dark Indigo/Blue (Fondo) */
+
+  /* Glassmorphism y Tipografía */
+  --glass-bg: rgba(255, 255, 255, 0.068);
+  --glass-border: rgba(255, 255, 255, 0.021);
+  --text-main: #000000; /* Gris oscuro para lectura */
+  --text-muted: #000000; /* Gris medio para subtítulos */
+  --input-bg: rgba(0, 0, 0, 0.3);
+
+  /* Tipografía */
+  --font-family: "Outfit", system-ui, -apple-system, sans-serif;
 }
-.left {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  transition: 0.4s;
-  border-radius: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1;
-  left: 0;
-  width: 80px;
+
+aside {
   background: linear-gradient(
     -45deg,
     var(--primary-color),
     var(--accent-color)
   );
+  flex-shrink: 0;
+  width: 16rem;
+  color: white;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 6rem 1fr 8rem;
+  padding: 0.5rem;
+  will-change: width;
+  transition: width 0.25s linear, padding 0.25s linear;
+  z-index: 100;
 }
 
-.left img {
-  width: 40px;
-  margin: 34px 0 40px;
-}
-.sidebar button {
-  border: 0;
-  background: #ffffff;
-  font-size: 20px;
-  color: var(--text-main);
-  border-radius: 8px;
-  font-family: inherit;
-  cursor: pointer;
-}
-.left button {
-  width: 56px;
-  height: 64px;
-  margin-bottom: 18px;
+aside button {
+  background-color: transparent;
+  border: none;
+  height: 4rem;
+  width: 4rem;
+  font-size: 1.25rem;
+  color: white;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6px 0;
-  border-radius: 10px;
-}
-.left button span {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  text-align: center;
-  color: var(--text-main);
-  opacity: 0.9;
-}
-.left button i {
-  margin-bottom: -4px;
-  font-size: 44px;
-  line-height: 1;
-}
-.left button:hover span {
-  opacity: 1;
-}
-.left button:last-of-type {
-  margin-top: auto;
-  margin-bottom: 20px;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
 
-.sidebar:hover .left {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+aside button:hover {
+  background-color: #ffffff;
+  color: #242424;
+  font-size: 1.5rem;
 }
-.sidebar:hover .right {
-  translate: 0;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+
+ul {
+  list-style: none;
 }
-.btn-sidebar-icon {
+
+ul li {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-block: 0.25rem;
+  transition: width 0.2s linear;
+  overflow: hidden;
+}
+
+ul li.active,
+ul li:hover {
+  background-color: #ffffff;
+  color: #000;
+}
+
+ul li i {
+  width: 4rem;
+  height: 3.5rem;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul li label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-start;
+  padding-left: 0.5rem;
+  cursor: inherit;
 }
 
-/* Main Content Area */
-.main-content {
-  margin-left: 100px; /* Space for sidebar */
-  padding: 24px 40px;
-  width: calc(100% - 100px);
-  min-height: 100vh;
+ul li img {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffce00;
+}
+
+ul li:hover img {
+  border-color: #407f60;
+}
+
+main.main-layout {
+  flex-grow: 1;
+  display: block;
+  padding: 40px;
+  max-width: calc(100vw - 16rem);
+  transition: all 0.35s ease;
+}
+
+/* Si el aside se encoge (mini), el main debe expandirse */
+.mini + main.main-layout {
+  max-width: calc(100vw - 4rem);
+}
+.mini {
+  padding: 0;
+}
+
+.mini ul li {
+  width: 4rem;
+}
+
+.mini ul li:hover {
+  width: 12rem;
+  box-shadow: 0 0.5rem 0.5rem #24242436;
 }
