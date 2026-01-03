@@ -1,12 +1,7 @@
 // visitors.js
 
 import { protectedFetch } from "../services/apiClient.js";
-import { checkAuth } from "../guards/authGuard.js";
 import { showSnackBar, showConfirmSnackBar } from "../ui/snackbar.js";
-
-if (!checkAuth(["Administrador", "Recepcionista"])) {
-  throw new Error("Acceso no autorizado. Redirigiendo...");
-}
 
 export const loadVisitors = async () => {
   const tableBody = document.getElementById("visitorsTableBody");
@@ -28,7 +23,6 @@ export const loadVisitors = async () => {
 
     const visitors = await response.json();
     console.log("Datos recibidos de la API:", visitors);
-
     loadingDiv.style.display = "none";
 
     if (!visitors || visitors.length === 0) {
@@ -96,7 +90,6 @@ export const loadVisitors = async () => {
       });
     });
   } catch (error) {
-    console.error("Error loading visitors:", error);
     showSnackBar(
       "Error al cargar visitantes: " + (error.message || "Error desconocido"),
       "error"
@@ -124,7 +117,6 @@ export const loadVisitorsP = async () => {
 
     const visitors = await response.json();
     console.log("Datos recibidos de la API:", visitors);
-
     loadingDiv.style.display = "none";
 
     if (!visitors || visitors.length === 0) {

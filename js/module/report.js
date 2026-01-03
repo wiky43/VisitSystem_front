@@ -1,185 +1,27 @@
 import { protectedFetch } from "../services/apiClient.js";
-import { checkAuth } from "../guards/authGuard.js";
 import { showSnackBar } from "../ui/snackbar.js";
 
-/* =========================
-   Seguridad
-========================= */
-if (!checkAuth(["Administrador"])) {
-  throw new Error("Acceso no autorizado. Redirigiendo...");
-}
-
-/* =========================
-   Descargar archivo
-========================= */
-const fetchReportFile = async (format, startDate, endDate) => {
-  const params = new URLSearchParams({
-    format,
-    startDate,
-    endDate,
-  });
-
-  const url = `/api/reports/download?${params.toString()}`;
-
-  const response = await protectedFetch(url, "GET", null, {
-    responseType: "blob",
-    headers: {
-      Accept:
-        format === "pdf"
-          ? "application/pdf"
-          : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    },
-  });
-
-  if (!response.ok) {
-    showSnackBar("No se pudo generar el reporte", "error");
-    throw new Error("Error en la descarga");
-  }
-
-  return response;
-};
-
-/* =========================
-   Procesar descarga
-========================= */
-const processFileDownload = async (response, format) => {
-  const contentDisposition = response.headers.get("Content-Disposition");
-  let fileName = `reporte_visitas.${format}`;
-
-  if (contentDisposition) {
-    const match = contentDisposition.match(/filename="?([^"]*)"?/i);
-    if (match?.[1]) fileName = match[1];
-  }
-
-  const blob = await response.blob();
-  const href = window.URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.style.display = "none";
-  a.href = href;
-  a.download = fileName;
-
-  document.body.appendChild(a);
-  a.click();
-
-  window.URL.revokeObjectURL(href);
-  document.body.removeChild(a);
-
-  showSnackBar(`✅ Reporte (${fileName}) descargado con éxito.`, "success");
-};
-
-/* =========================
-   Exportar
-========================= */
-const handleExport = async (format) => {
-  const startDateInput = document.getElementById("startDate");
-  const endDateInput = document.getElementById("endDate");
-  const btnExcel = document.getElementById("btn-export-excel");
-  const btnPdf = document.getElementById("btn-export-pdf");
-
-  const startDate = startDateInput.value;
-  const endDate = endDateInput.value;
-
-  if (!startDate || !endDate) {
-    showSnackBar("Selecciona ambas fechas.", "error");
-    return;
-  }
-
-  if (new Date(startDate) > new Date(endDate)) {
-    showSnackBar(
-      "La fecha de inicio no puede ser posterior a la fecha de fin.",
-      "error"
-    );
-    return;
-  }
-
-  btnExcel.disabled = true;
-  btnPdf.disabled = true;
-
-  showSnackBar(`⏳ Generando reporte en ${format.toUpperCase()}...`);
-
-  try {
-    const response = await fetchReportFile(format, startDate, endDate);
-    await processFileDownload(response, format);
-  } catch (error) {
-    console.error(error);
-    showSnackBar("❌ Error al generar el reporte.", "error");
-  } finally {
-    btnExcel.disabled = false;
-    btnPdf.disabled = false;
-  }
-};
-
-/* =========================
-   Inicializar modal (SOLO AL ABRIR)
-========================= */
-const initializeReportModule = () => {
-  const endDateInput = document.getElementById("endDate");
-  const btnExportExcel = document.getElementById("btn-export-excel");
-  const btnExportPdf = document.getElementById("btn-export-pdf");
-
-  if (!endDateInput.value) {
-    endDateInput.value = new Date().toISOString().split("T")[0];
-  }
-
-  showSnackBar(
-    "Selecciona un rango de fechas y haz clic en exportar.",
-    "success"
-  );
-
-  btnExportExcel.onclick = () => handleExport("xlsx");
-  btnExportPdf.onclick = () => handleExport("pdf");
-};
-
-/* =========================
-   Resetear modal al cerrar
-========================= */
-const resetReportModal = () => {
-  document.getElementById("startDate").value = "";
-  document.getElementById("endDate").value = new Date()
-    .toISOString()
-    .split("T")[0];
-};
-
-/* =========================
-   Eventos 
-========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  loadAllVisitors(); // 👈 ESTA ES LA CLAVE
-
-  const modal = document.getElementById("reportModal");
-  if (modal) {
-    modal.addEventListener("shown.bs.modal", initializeReportModule);
-    modal.addEventListener("hidden.bs.modal", resetReportModal);
-  }
-});
-
+// =========================
+// Cargar todos los visitantes
+// =========================
 export const loadAllVisitors = async () => {
   const tableBody = document.getElementById("AllvisitorsTableBody");
-  const loadingDiv = document.getElementById("loading");
-  const errorDiv = document.getElementById("error-msg");
-
-  if (!tableBody || !loadingDiv || !errorDiv) return;
-
-  loadingDiv.style.display = "block";
+  if (!tableBody) return;
   tableBody.innerHTML = "";
-  errorDiv.style.display = "none";
-
   try {
     const response = await protectedFetch("/api/Visitantes/historial", "GET");
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
+      showSnackBar(
+        `Error HTTP: ${response.status} ${response.statusText}`,
+        "error"
+      );
+      return;
     }
 
     const visitors = await response.json();
-    console.log("Datos recibidos de la API:", visitors);
-
-    loadingDiv.style.display = "none";
-
     if (!visitors || visitors.length === 0) {
-      tableBody.innerHTML =
-        '<tr><td colspan="25"  style="text-align: center;">No hay visitantes activos.</td></tr>';
+      showSnackBar("No hay datos en el historial.", "error");
       return;
     }
 
@@ -188,14 +30,24 @@ export const loadAllVisitors = async () => {
     visitors.forEach((visitor) => {
       const row = document.createElement("tr");
       const entryDate = new Date(visitor.horaEntrada);
+      const salidaDate = new Date(visitor.horaSalida);
       const formattedDate = entryDate.toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
         hour: "2-digit",
         second: "2-digit",
         minute: "2-digit",
         hour12: true,
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+      const formattedDateSalida = salidaDate.toLocaleString("es-ES", {
+        hour: "2-digit",
+        second: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
       });
 
       row.innerHTML = `
@@ -208,14 +60,73 @@ export const loadAllVisitors = async () => {
         <!--  hora de entrada -->
         <td>${formattedDate}</td>
         <!--  hora de salida -->
-        <td>${formattedDate}</td>
+        <td>${formattedDateSalida}</td>
         <td>${visitor.codigo}</td>
       `;
       tableBody.appendChild(row);
     });
   } catch (error) {
-    console.error("Error al cargar visitantes:", error);
-    errorDiv.style.display = "block";
-    errorDiv.textContent = "Error al cargar visitantes.";
+    setTimeout(() => {
+      showSnackBar("Error al cargar datos del Historial!", "error");
+    }, 5000);
+  }
+};
+
+// ==========================================
+// FILTRO DE BÚSQUEDA
+// ==========================================
+document.getElementById("inputBusqueda")?.addEventListener("input", (e) => {
+  const texto = e.target.value.toLowerCase().trim();
+  // Seleccionamos solo las filas de datos reales, ignorando el mensaje de error si existe
+  const filas = document.querySelectorAll(
+    "#AllvisitorsTableBody tr:not(#sinResultados)"
+  );
+  let coincidencias = 0;
+
+  // Si el buscador está vacío, mostramos todo y eliminamos el mensaje de error inmediatamente
+  if (texto === "") {
+    filas.forEach((f) => (f.style.display = ""));
+    gestionarMensajeVacio(false);
+    return;
+  }
+
+  // Filtrado lógico
+  filas.forEach((fila) => {
+    // Seleccionamos la primera celda (ajusta el índice [0] si el nombre está en otra columna)
+    const celdaNombre = fila.getElementsByTagName("td")[0];
+    const textoNombre = celdaNombre
+      ? celdaNombre.textContent.toLowerCase()
+      : "";
+
+    if (textoNombre.includes(texto)) {
+      fila.style.display = "";
+      coincidencias++;
+    } else {
+      fila.style.display = "none";
+    }
+  });
+  gestionarMensajeVacio(coincidencias === 0);
+});
+
+const gestionarMensajeVacio = (mostrar) => {
+  const tablaBody = document.getElementById("AllvisitorsTableBody");
+  const mensajeExistente = document.getElementById("sinResultados");
+
+  if (mostrar) {
+    if (!mensajeExistente) {
+      const tr = document.createElement("tr");
+      tr.id = "sinResultados";
+      tr.innerHTML = `
+                <td colspan="4" style="text-align:center; padding:40px; color: #64748b; background: #fff;">
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                        <i class="material-symbols-outlined" style="font-size: 48px; opacity:0.5;">person_search</i>
+                        <span style="font-weight:500;">No se encontraron usuarios que coincidan.</span>
+                    </div>
+                </td>`;
+      tablaBody.appendChild(tr);
+    }
+  } else {
+    // Esta es la parte clave: si 'mostrar' es false, borramos el mensaje
+    mensajeExistente?.remove();
   }
 };

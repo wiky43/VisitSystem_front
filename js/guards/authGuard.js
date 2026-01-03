@@ -13,7 +13,7 @@ export const checkAuth = (allowedRoles = []) => {
     allowedRoles.length > 0 &&
     !allowedRoles.map((r) => r.toLowerCase()).includes(user.role?.toLowerCase())
   ) {
-    showSnackBar(`Acceso denegado. Rol: ${user.role}`, "error");
+    showSnackBar(`Acceso denegado! Rol: ${user.role}`, "error");
 
     setTimeout(() => {
       window.location.href = "/index.html";

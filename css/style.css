@@ -355,9 +355,7 @@ nav .menu .menu_links a.link:hover::before {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: linear-gradient(135deg, #b71c1c, var(--primary-color));
-  background-size: 100vw 100%;
-  background-position: center;
+  background: var(--primary-color);
   color: white;
 }
 
@@ -368,18 +366,16 @@ nav .menu .menu_links a.link:hover::before {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: linear-gradient(135deg, #b71c1c, var(--primary-color));
-  background-size: 100vw 100%;
-  background-position: center;
+  background: var(--primary-color);
   color: white;
 }
 
 .visitors-table thead {
-  background: none;
+  background: var(--primary-color);
 }
 
 .visitors-tableP thead {
-  background: none;
+  background: var(--primary-color);
 }
 
 .visitors-table tbody tr:nth-child(even) {
@@ -463,104 +459,6 @@ nav .menu .menu_links a.link:hover::before {
   padding: 15px 0;
 }
 /* Snackbar / Toast Styles */
-#snackbar {
-  visibility: hidden;
-  min-width: 300px;
-  background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #fff;
-  text-align: left;
-  border-radius: 12px;
-  padding: 16px 24px;
-  position: fixed;
-  z-index: 9999;
-  left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border-left: 4px solid var(--primary-color);
-}
-
-#snackbar.show {
-  visibility: visible;
-  opacity: 1;
-  bottom: 50px;
-}
-
-#snackbar.error {
-  border-left-color: #ef4444;
-}
-
-#snackbar.success {
-  border-left-color: #10b981;
-}
-
-#snackbar i {
-  font-size: 1.5rem;
-}
-
-#snackbar.error i {
-  color: #ef4444;
-}
-
-#snackbar.success i {
-  color: #10b981;
-}
-#snackbar.confirm {
-  background-color: #111827;
-  justify-content: space-between;
-  width: auto;
-  min-width: 320px;
-  max-width: 450px;
-}
-
-/* Botones de confirmación del SnackBar*/
-#snackbar.btn-snackbar {
-  background-color: #374151;
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  margin-left: 0.5rem;
-  transition: all 0.2s ease;
-}
-
-#snackbar.confirm .btn-snackbar {
-  padding: 8px 18px;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#snackbar.confirm .btn-snackbar#confirm-yes {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: white;
-}
-#snackbar.confirm .btn-snackbar#confirm-yes:hover {
-  background-color: #22c55e;
-  transform: scale(1.05);
-}
-
-#snackbar.confirm .btn-snackbar#confirm-no {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-}
-#snackbar.confirm .btn-snackbar#confirm-no:hover {
-  transform: scale(1.05);
-  background-color: #ef4444;
-}
 
 /* Responsive para pantallas pequeñas */
 @media (max-width: 1024px) {

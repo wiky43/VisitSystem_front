@@ -18,63 +18,81 @@ export function logout() {
 // ----------------------------------------------------------------------
 // FETCH PROTEGIDO (USA COOKIES AUTOMÁTICAMENTE)
 // ----------------------------------------------------------------------
-export async function protectedFetch(endpoint, method = "GET", data = null) {
-  const BASE_URL = API_BASE_URL;
+export async function protectedFetch(
+  endpoint,
+  method = "GET",
+  data = null,
+  options = {}
+) {
+  const { timeout = 8000, showErrors = true } = options; // Configuraciones extra
 
   const user = getCurrentUser();
-
   if (!user) {
-    showSnackBar("Login requerido. Información local ausente.", "error");
     logout();
-    return Promise.reject(new Error("Login requerido."));
+    throw new ApiError("Sesión local inexistente", 401);
   }
 
-  const headers = {
-    "Content-Type": "application/json",
+  // Configuración de aborto por tiempo excedido
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  const config = {
+    method,
+    headers: { "Content-Type": "application/json", ...options.headers },
+    credentials: "include",
+    signal: controller.signal,
+    body: data ? JSON.stringify(data) : null,
   };
 
-  let response = null;
-
   try {
-    response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: method,
-      headers: headers,
-      body: data ? JSON.stringify(data) : null,
-      credentials: "include",
-    });
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+    clearTimeout(id);
 
+    // 1. Manejo de Sesión Expirada
     if (response.status === 401 || response.status === 403) {
-      showSnackBar(
-        "Sesión no válida o expirada. Vuelva a iniciar sesión.",
-        "error"
-      );
       logout();
-      throw new Error("Sesión no válida o expirada. Vuelva a iniciar sesión.");
+      if (showErrors)
+        showSnackBar("Sesión expirada. Inicie sesión de nuevo.", "error");
+      throw new ApiError("No autorizado", response.status);
     }
 
+    // 2. Manejo de Errores de API (400, 404, 500, etc)
     if (!response.ok) {
-      let errorMessage = `Error en la petición: ${response.status} ${response.statusText}`;
+      let errorDetail = {};
       try {
-        const errorData = await response.json();
-        errorMessage = errorData.message || errorData.detail || errorMessage;
+        errorDetail = await response.json();
       } catch (e) {
-        showSnackBar(errorMessage, "error");
+        errorDetail = { message: response.statusText };
       }
-      throw new Error(errorMessage);
+
+      const msg =
+        errorDetail.message || errorDetail.detail || "Error desconocido";
+      if (showErrors) showSnackBar(msg, "error");
+
+      throw new ApiError(msg, response.status, errorDetail);
     }
 
-    return response;
+    // 3. Éxito: Retornar JSON o la respuesta cruda según necesidad
+    const contentType = response.headers.get("content-type");
+    return contentType && contentType.includes("application/json")
+      ? await response.json()
+      : response;
   } catch (error) {
-    showSnackBar("Error en protectedFetch: " + error, "error");
+    clearTimeout(id);
 
-    if (error.message.includes("Failed to fetch")) {
-      showSnackBar(
-        "Error de Conexión: El servidor de la API no está disponible. Verifique su red o CORS.",
-        "error"
-      );
-      throw new Error("Network connection failed. Backend server unreachable.");
+    // Manejo de errores de red o aborto
+    if (error.name === "AbortError") {
+      if (showErrors)
+        showSnackBar("La petición tardó demasiado tiempo.", "error");
+      throw new NetworkError("Timeout");
     }
-    throw error;
+
+    if (error instanceof ApiError) throw error; // Ya manejado arriba
+
+    // Error de conexión física
+    const netMsg = "No se pudo conectar con el servidor. Revisa tu internet.";
+    if (showErrors) showSnackBar(netMsg, "error");
+    throw new NetworkError(netMsg);
   }
 }
 

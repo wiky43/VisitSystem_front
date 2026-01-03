@@ -1,0 +1,336 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap");
+@import url("https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css");
+:root {
+  /* Paleta Principal (Azul/Índigo - Estilo Unificado) */
+  --primary-color: #003876; /* Indigo VIBRANTE */
+  --primary-hover: #ce1126;
+  --accent-color: #ce1126; /* Pink VIBRANTE (Acento Secundario - Blobs/Gradientes) */
+  --bg-gradient-1: #003876; /* Dark Slate (Base más oscura) */
+  --bg-gradient-2: #ce1126; /* Dark Indigo/Blue (Fondo) */
+
+  /* Glassmorphism y Tipografía */
+  --glass-bg: rgba(255, 255, 255, 0.068);
+  --glass-border: rgba(255, 255, 255, 0.021);
+  --text-main: #000000; /* Gris oscuro para lectura */
+  --text-muted: #000000; /* Gris medio para subtítulos */
+  --input-bg: rgba(0, 0, 0, 0.3);
+
+  /* Tipografía */
+  --font-family: "Outfit", system-ui, -apple-system, sans-serif;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.35s linear;
+  font-family: "barlow", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  color: var(--text-main);
+  padding: 0px;
+  position: relative;
+  background: #efefef;
+  overflow: hidden;
+}
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: -1;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+body::before {
+  background: var(--accent-color);
+  bottom: -100px;
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  background: var(--primary-color);
+  bottom: -100px;
+  right: -100px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(50px, 50px) rotate(20deg);
+  }
+}
+
+.visitors-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+  table-layout: auto;
+}
+/* Contenedor principal con columnas */
+.container.main-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 30px;
+  padding: 20px;
+  max-width: 90vw;
+  margin: 10px auto;
+}
+.container-layout-table {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  padding: 20px;
+  max-width: 90vw;
+  margin: 10px auto;
+}
+
+/* Tarjetas */
+.card {
+  background: #efefef;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.visitors-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+  table-layout: auto;
+}
+
+.visitors-table h2 {
+  text-align: center;
+  object-position: center;
+}
+
+.visitors-table td {
+  padding: 12px 5px;
+  text-align: center;
+  min-width: 100px;
+}
+
+.visitors-table th {
+  padding: 12px 5px;
+  text-align: center;
+  min-width: 100px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--primary-color);
+  background-size: 100vw 100%;
+  background-position: center;
+  color: white;
+}
+
+.visitors-table thead {
+  background: none;
+}
+
+.visitors-table tbody tr:nth-child(even) {
+  background-color: #f1f5f9;
+}
+
+.visitors-table tbody tr:hover {
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.visitors-table button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-hover);
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.visitors-table button:hover {
+  background-color: var(--primary-color);
+}
+
+/* Scroll vertical interno en la tarjeta */
+.active-visitors-card {
+  width: 100%;
+  max-height: 85vh;
+  margin-top: 20px;
+}
+
+.active-visitors-card > div[style*="overflow-x: auto"] {
+  overflow-y: auto;
+  max-height: 60vh;
+  margin-top: 10px;
+  padding-right: 10px;
+}
+
+.main-layout .text h2 {
+  color: #b71c1c;
+  font-size: 2rem;
+}
+
+.main-layout .text p {
+  color: #666;
+  font-size: 1.5rem;
+}
+
+/* Mensajes de carga y error */
+#loading {
+  font-size: 16px;
+  color: #1e40af;
+  text-align: center;
+  padding: 15px 0;
+}
+
+#error-msg {
+  font-size: 16px;
+  color: #b71c1c;
+  text-align: center;
+  padding: 15px 0;
+}
+
+/* Contenedor del Modal (Fondo oscuro) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Oscurece el fondo */
+  display: flex; /* Para centrar el contenido */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Cuando el modal está activo */
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ventana Blanca */
+.modal-content-custom {
+  background: white;
+  width: 90%;
+  max-width: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content-custom {
+  transform: translateY(0);
+}
+
+/* Cabecera */
+.modal-header-custom {
+  background: var(--primary-color);
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-close-custom {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Cuerpo y Entradas */
+.modal-body-custom {
+  padding: 25px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.input-custom {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Botones de Exportar */
+.button-group-custom {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-export {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-export.excel {
+  background-color: #27ae60;
+}
+.btn-export.pdf {
+  background-color: var(--accent-color);
+}
+
+.btn-export:hover {
+  filter: brightness(1.2);
+}
+
+.btn-reporte {
+  background: #003876;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+}

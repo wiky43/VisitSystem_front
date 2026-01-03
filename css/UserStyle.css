@@ -1,54 +1,40 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap");
-@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
-/* =========================
-   Variables base
-========================= */
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap");
+@import url("https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css");
 :root {
   /* Paleta Principal (Azul/Índigo - Estilo Unificado) */
-  --primary-color: #003876;
+  --primary-color: #003876; /* Indigo VIBRANTE */
   --primary-hover: #ce1126;
-  --accent-color: #ce1126;
-  --bg-gradient-1: #003876;
-  --bg-gradient-2: #ce1126;
+  --accent-color: #ce1126; /* Pink VIBRANTE (Acento Secundario - Blobs/Gradientes) */
+  --bg-gradient-1: #003876; /* Dark Slate (Base más oscura) */
+  --bg-gradient-2: #ce1126; /* Dark Indigo/Blue (Fondo) */
 
   /* Glassmorphism y Tipografía */
   --glass-bg: rgba(255, 255, 255, 0.068);
   --glass-border: rgba(255, 255, 255, 0.021);
-  --text-main: #000000;
-  --text-muted: #000000;
+  --text-main: #000000; /* Gris oscuro para lectura */
+  --text-muted: #000000; /* Gris medio para subtítulos */
   --input-bg: rgba(0, 0, 0, 0.3);
 
   /* Tipografía */
-  --font-family: "Outfit", system-ui, -apple-system, sans-serif;
-  --bg-main: #f4f6fb;
-  --card-bg: #ffffff;
-  --primary: #003876;
-  --danger: #ce1126;
-  --radius: 14px;
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --font-family: "barlow", system-ui, -apple-system, sans-serif;
 }
-
-/* =========================
-   Reset básico
-========================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-family);
-  text-decoration: none;
+  transition: all 0.35s linear;
+  font-family: "barlow", sans-serif;
 }
 
 body {
   min-height: 100vh;
-  display: block;
+  display: flex;
   color: var(--text-main);
   padding: 0px;
   position: relative;
   background: #efefef;
-  overflow-x: hidden;
+  overflow: hidden;
 }
-
 body::before,
 body::after {
   content: "";
@@ -86,208 +72,139 @@ body::after {
   }
 }
 
-/* =========================
-   Layout principal
-========================= */
-.main-layout {
-  max-width: 1600px;
-  margin: 40px auto;
-  padding: 20px 20px;
-}
-
-/* =========================
-   Header
-========================= */
-.card-header {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card-header h2 {
-  font-family: var(--font-family);
-  font-size: 2.5rem;
-  line-height: 1;
-}
-
-/* =========================
-   Botón nuevo usuario
-========================= */
-#btnNuevoUsuario {
-  font-size: 1.2rem;
-  align-self: flex-end;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-}
-
-#btnNuevoUsuario i {
-  font-size: 28px;
-  line-height: 1;
-}
-
-/* =========================
-   Alertas y loaders
-========================= */
-#loadingUsers {
-  display: flex;
-  justify-content: center;
-}
-
-#error-msg-users {
-  border-radius: var(--radius);
-  font-weight: 500;
-}
-
-/* =========================
-   Card tabla
-========================= */
-.card {
-  border-radius: var(--radius);
-  border: none;
-  background: var(--card-bg);
-  box-shadow: var(--shadow-soft);
-}
-
-.card-body {
-  padding: 20px;
-}
-
-/* =========================
-   Tabla
-========================= */
-.table {
+.Users-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
   text-align: center;
   table-layout: auto;
 }
-.table thead th {
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+/* Contenedor principal con columnas */
+.container.main-layout {
+  display: grid;
+  gap: 30px;
+  padding: 20px;
+  max-width: 90vw;
+  margin: 10px auto;
+}
+.container-layout-table {
+  display: grid;
+  padding: 20px;
+  max-width: 90vw;
+  margin: 10px auto;
 }
 
-.table tbody tr {
-  transition: background 0.2s ease;
+.main-layout header div {
+  color: #b71c1c;
+  font-size: 2rem;
 }
 
-.table tbody tr:hover {
-  background: #f1f5f9;
+.main-layout header div p {
+  color: #666;
+  font-size: 1.5rem;
 }
-
-.table td,
-.table th {
-  padding: 12px 5px;
-  text-align: center;
-  min-width: 100px;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-.table thead {
-  background: linear-gradient(135deg, #b71c1c, var(--primary-color));
-}
-.table .btn i {
-  font-size: 1.3rem;
-  color: #fff;
-  line-height: 1;
+/* Tarjetas */
+.card {
+  background: #efefef;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  border-radius: 15px;
+  padding: 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+/* =====================================================
+   TABLA DE USUARIOS – ESTILO MODERNO TIPO DASHBOARD
+===================================================== */
+.Users-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  font-size: 14px;
 }
 
-.btn-Edit {
-  background-color: var(--primary-color);
-  color: #fff;
+/* =====================
+   CABECERA
+===================== */
+.Users-table thead th {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  text-align: left;
 }
 
-.btn-Edit:hover {
-  background-color: var(--primary-color);
-  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.25);
-  transform: translateY(-2px);
-  color: var(--text-main);
+.Users-table thead th:last-child {
+  text-align: right;
 }
 
-.btn-Delete {
-  background-color: var(--primary-hover);
-
-  color: #fff;
+/* =====================
+   FILAS (CARD STYLE)
+===================== */
+.Users-table tbody tr {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.btn-Delete:hover {
-  background-color: var(--primary-hover);
-  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.25);
-  transform: translateY(-2px);
+.Users-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* =========================
-   Acciones
-========================= */
-.table .btn {
-  border-radius: 5px;
-  padding: 6px 25px;
-  font-size: 1.3rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* =====================
+   CELDAS
+===================== */
+.Users-table td {
+  padding: 16px;
+  text-align: left;
+  vertical-align: middle;
 }
 
-/* =========================
-   Modal
-========================= */
-.modal-content {
-  border-radius: var(--radius);
-  border: none;
-  box-shadow: var(--shadow-soft);
-}
-
-.modal-header {
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.modal-title {
+/* ID */
+.Users-table td:first-child {
+  width: 70px;
   font-weight: 600;
+  color: #6b7280;
 }
 
-.modal-footer {
-  border-top: 1px solid var(--border-soft);
-}
-#userModal .form-control,
-#userModal .form-select {
-  border: 1.5px solid #000;
-}
-
-#userModal .form-control:focus,
-#userModal .form-select:focus {
-  border-color: #000;
-  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.25);
-}
-#userModal .form-control::placeholder {
-  color: #000;
-}
-/* =========================
-   Formularios
-========================= */
-.form-label {
-  font-weight: 600;
-  font-size: 0.9rem;
+/* Usuario */
+.Users-table td strong {
+  color: var(--primary-color);
+  font-size: 15px;
+  font-weight: 700;
 }
 
-.form-control,
-.form-select {
-  border-radius: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border-soft);
+/* Última columna (acciones) */
+.Users-table td:last-child {
+  text-align: right;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+/* Scroll vertical interno en la tarjeta */
+.active-visitors-card {
+  width: 100%;
+  max-height: 85vh;
+  margin-top: 20px;
 }
+
+.active-visitors-card > div[style*="overflow-x: auto"] {
+  overflow-y: auto;
+  max-height: 60vh;
+  margin-top: 10px;
+  padding-right: 10px;
+}
+
 /* Mensajes de carga y error */
 #loading {
   font-size: 16px;
@@ -302,115 +219,266 @@ body::after {
   text-align: center;
   padding: 15px 0;
 }
-/* Snackbar / Toast Styles */
-#snackbar {
-  visibility: hidden;
-  min-width: 300px;
-  background: rgba(15, 23, 42, 0.9); /* Dark background */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #fff;
-  text-align: left;
-  border-radius: 12px;
-  padding: 16px 24px;
+
+/* ===============================
+   MODAL OVERLAY
+================================ */
+.modal-overlay {
   position: fixed;
-  z-index: 9999;
-  left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-  font-size: 0.95rem;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
-  gap: 12px;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border-left: 4px solid var(--primary-color);
+  justify-content: center;
+  z-index: 999;
+}
+.hidden {
+  display: none;
 }
 
-#snackbar.show {
-  visibility: visible;
-  opacity: 1;
-  bottom: 50px;
+/* ===============================
+   MODAL CONTENT
+================================ */
+.modal-content-custom {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 95%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: modalFadeIn 0.25s ease;
 }
 
-#snackbar.error {
-  border-left-color: #ef4444; /* Red for errors */
-}
-
-#snackbar.success {
-  border-left-color: #10b981; /* Green for success */
-}
-
-#snackbar i {
-  font-size: 1.5rem;
-}
-
-#snackbar.error i {
-  color: #ef4444;
-}
-
-#snackbar.success i {
-  color: #10b981;
-}
-#snackbar.confirm {
-  background-color: #111827;
+/* ===============================
+   HEADER MODAL
+================================ */
+.modal-header-custom {
+  display: flex;
   justify-content: space-between;
-  width: auto;
-  min-width: 320px;
-  max-width: 450px;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
 }
 
-/* Botones de confirmación del SnackBar*/
-#snackbar.btn-snackbar {
-  background-color: #374151;
+.modal-header-custom h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Botón cerrar */
+.btn-close-custom {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ===============================
+   BODY
+================================ */
+.modal-body-custom {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.modal-body-custom input,
+.modal-body-custom select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.modal-body-custom input:focus,
+.modal-body-custom select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* Hint */
+.form-hint {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+.modal-footer-custom {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #eee;
+}
+
+/* ===============================
+   BOTONES
+================================ */
+.btn-primary-custom {
+  background: #2563eb;
   color: #fff;
   border: none;
-  padding: 6px 14px;
+  padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.85rem;
-  margin-left: 0.5rem;
-  transition: all 0.2s ease;
+  font-size: 14px;
 }
 
-#snackbar.confirm .btn-snackbar {
-  padding: 8px 18px;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  font-weight: 500;
+.btn-primary-custom:hover {
+  background: #1d4ed8;
+}
+
+.btn-secondary-custom {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 14px;
 }
 
-#snackbar.confirm .btn-snackbar#confirm-yes {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: white;
-}
-#snackbar.confirm .btn-snackbar#confirm-yes:hover {
-  background-color: #22c55e;
-  transform: scale(1.05);
+.btn-secondary-custom:hover {
+  background: #d1d5db;
 }
 
-#snackbar.confirm .btn-snackbar#confirm-no {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-}
-#snackbar.confirm .btn-snackbar#confirm-no:hover {
-  transform: scale(1.05);
-  background-color: #ef4444;
-}
-
-/* =========================
-   Responsive
-========================= */
-@media (max-width: 768px) {
-  .card-header {
-    align-items: stretch;
+/* ===============================
+   ANIMACIÓN
+================================ */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-
-  #btnNuevoUsuario {
-    width: 100%;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
+}
+
+/* ===============================
+   BLOQUEAR SCROLL DEL BODY
+================================ */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* =====================
+   ROLES (BADGES)
+===================== */
+.role-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Administrador */
+.role-badge.role-admin {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+/* Recepcionista / Usuario */
+.role-badge.role-user {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+/* ===============================
+   ACCIONES (BOTONES EDITAR/ELIMINAR)
+================================ */
+.actions-cell {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-right: 15px !important;
+}
+
+.btn-edit,
+.btn-delete {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+/* Botón Editar */
+.btn-edit {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.btn-edit:hover {
+  background-color: #e5e7eb;
+  color: #000;
+}
+
+.btn-edit i {
+  font-size: 18px;
+  color: #2563eb; /* Azul */
+}
+
+/* Botón Eliminar */
+.btn-delete {
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+  color: #7f1d1d;
+}
+
+.btn-delete i {
+  font-size: 18px;
+  color: #dc2626; /* Rojo */
+}
+
+/* ===============================
+   ESTADOS DE LA TABLA
+================================ */
+.empty-message {
+  padding: 40px !important;
+  color: #6b7280;
+  font-style: italic;
+  font-size: 16px;
+}
+
+/* Alineación de texto al final (para encabezados de acciones) */
+.text-end {
+  text-align: right !important;
+  padding-right: 20px !important;
+}
+
+/* Utilidad para el strong del nombre de usuario */
+td strong {
+  color: var(--primary-color);
+  font-weight: 600;
 }
